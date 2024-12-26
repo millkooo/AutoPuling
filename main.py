@@ -26,8 +26,8 @@ def set_forground(game_nd):
 
 def enum_windows_callback(hwnd, hwnds):
     try:
-        class_name = win32gui.GetClassName(hwnd)
-        window_name = win32gui.GetWindowText(hwnd)
+        class_name = win32gui.GetClassName(hwnd).strip()
+        window_name = win32gui.GetWindowText(hwnd).strip()
         if (window_name == 'InfinityNikki' or window_name == '无限暖暖') and class_name == 'UnrealWindow':
             hwnds.append(hwnd)
     except:
@@ -135,7 +135,7 @@ keyboard.on_press(on_key_press)
 game_nd = init_window()
 if game_nd is not None:
     tm = time.time()
-    end_time = tm + 60 * 60 * 6
+    end_time = tm + 60 * 60 * 4.5
     print("游戏窗口已找到，开始运行")
     print(f"预计结束时间：{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(end_time))}")
     time.sleep(1)
@@ -150,6 +150,6 @@ if game_nd is not None:
     if stop:
         print("运行已停止")
     else:
-        print("运行时间已达6小时，自动停止")
+        print("运行时间已达4.5小时，自动停止")
 
     time.sleep(1)
