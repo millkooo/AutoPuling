@@ -28,7 +28,7 @@ def enum_windows_callback(hwnd, hwnds):
     try:
         class_name = win32gui.GetClassName(hwnd)
         window_name = win32gui.GetWindowText(hwnd)
-        if '无限暖暖' in window_name and class_name == 'UnrealWindow':
+        if (window_name == 'InfinityNikki' or window_name == '无限暖暖') and class_name == 'UnrealWindow':
             hwnds.append(hwnd)
     except:
         pass
