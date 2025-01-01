@@ -145,8 +145,9 @@ if game_nd is not None:
     press('f', 0.2)
     recent_a = 0
 
+    notif_tm = time.time()
     while not stop and time.time() < end_time:
-        if int((time.time() - tm) // (30 * 60)) > 0 and int((time.time() - tm) % (30 * 60)) == 0:
+        if int((time.time() - tm) % (30 * 60)) <= 5 and time.time() - notif_tm > 60:
             print(f"已运行{int((time.time() - tm) // 60)}分钟，预计结束时间：{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(end_time))}")
         time.sleep(random.random() * 1 + 2)
         press('f', 0.2)
