@@ -7,10 +7,13 @@ import win32con
 import win32api
 import json
     
-def send_key_to_window(hwnd, key=0x46):
+def send_key_to_window(key='f', tm=0.2, keyup=True):
+    hwnd = game_nd
+    key = 0x41 + ord(key) - ord('a')
     win32api.PostMessage(hwnd, win32con.WM_KEYDOWN, key, 0)
-    time.sleep(random.random()*0.2+0.2)
-    win32api.PostMessage(hwnd, win32con.WM_KEYUP, key, 0)    
+    time.sleep(random.random()*0.2+tm)
+    if keyup:
+        win32api.PostMessage(hwnd, win32con.WM_KEYUP, key, 0)    
 
 def set_forground(game_nd):
     try:
@@ -42,12 +45,11 @@ def init_window():
         time.sleep(5)
         return None
     game_nd = hwnds[0]
-    send_key_to_window(game_nd, win32con.VK_SPACE)
     if foreground:
         set_forground(game_nd)
     return game_nd
 
-def press_key_pynput(key):
+def press_key_pynput(key, tm, keyup):
     global stop, game_nd
     cnt = 0
     while win32gui.GetForegroundWindow() != game_nd:
@@ -66,8 +68,9 @@ def press_key_pynput(key):
             break
     keyboard = Controller()
     keyboard.press(key)
-    time.sleep(random.random()*0.2+0.2)
-    keyboard.release(key)
+    time.sleep(random.random()*0.2+tm)
+    if keyup:
+        keyboard.release(key)
 
 stop = False
 def on_key_press(event):
@@ -75,12 +78,12 @@ def on_key_press(event):
         global stop
         print("F8 已被按下，尝试停止运行")
         stop = True
-        
-def press():
+
+def press(key, tm, keyup = True):
     if foreground:
-        press_key_pynput('f')
+        press_key_pynput(key, tm, keyup)
     else:
-        send_key_to_window(game_nd)
+        send_key_to_window(key, tm, keyup)
 
 def load_info():
     try:
@@ -139,13 +142,17 @@ if game_nd is not None:
     print("游戏窗口已找到，开始运行")
     print(f"预计结束时间：{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(end_time))}")
     time.sleep(1)
-    press()
+    press('f', 0.2)
+    recent_a = 0
 
     while not stop and time.time() < end_time:
         if int((time.time() - tm) // (30 * 60)) > 0 and int((time.time() - tm) % (30 * 60)) == 0:
             print(f"已运行{int((time.time() - tm) // 60)}分钟，预计结束时间：{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(end_time))}")
         time.sleep(random.random() * 1 + 2)
-        press()
+        press('f', 0.2)
+        if time.time() - recent_a > 10:
+            recent_a = time.time()
+            press('a', 0.2, False)
 
     if stop:
         print("运行已停止")
