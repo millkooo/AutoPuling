@@ -138,7 +138,7 @@ keyboard.on_press(on_key_press)
 game_nd = init_window()
 if game_nd is not None:
     tm = time.time()
-    end_time = tm + 60 * 60 * 4.5
+    end_time = tm + 60 * 60 * 4
     print("游戏窗口已找到，开始运行")
     print(f"预计结束时间：{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(end_time))}")
     time.sleep(1)
@@ -149,6 +149,7 @@ if game_nd is not None:
     while not stop and time.time() < end_time:
         if int((time.time() - tm) % (30 * 60)) <= 5 and time.time() - notif_tm > 60:
             print(f"已运行{int((time.time() - tm) // 60)}分钟，预计结束时间：{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(end_time))}")
+            notif_tm = time.time()
         time.sleep(random.random() * 1 + 2)
         press('f', 0.2)
         if time.time() - recent_a > 10:
