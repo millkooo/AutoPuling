@@ -1,0 +1,1 @@
+{"foreground": 0, "remember_foreground": 0, "remember_duration": 0, "remember_closure": 0, "duration": 60, "closure": 1}
