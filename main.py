@@ -253,8 +253,8 @@ if __name__ == "__main__":
                 print(f"已运行 {int((time.time() - tm) // 60)} 分钟，剩余 {duration - int((time.time() - tm) // 60)} 分钟。")
                 notif_tm = time.time()
 
-            time.sleep(random.random() * 1 + 2)
-            press('f', 0.2)
+            time.sleep(random.random() * 1 + 0.3)
+            press('f', 0.1)
 
             if time.time() - recent_a > 10:
                 recent_a = time.time()

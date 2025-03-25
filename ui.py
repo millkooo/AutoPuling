@@ -13,7 +13,28 @@ import win32con
 import win32api
 import keyboard
 import random
+import ctypes
 from pynput.keyboard import Controller
+
+# 获取正确的图标路径，适用于开发环境和打包环境
+def resource_path(relative_path):
+    """ 获取资源的绝对路径，兼容开发环境和PyInstaller打包后的环境 """
+    try:
+        # PyInstaller创建临时文件夹，将路径存储在_MEIPASS中
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
+
+# 图标路径
+icon_path = resource_path('puling.ico')
+
+# 设置应用ID，以便Windows在任务栏中显示正确的图标
+try:
+    myappid = 'puling.autopuling.1.0' 
+    ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
+except Exception:
+    pass  # 如果失败，静默处理
 
 class AutoPulingThread(QThread):
     update_log = pyqtSignal(str)
@@ -179,6 +200,9 @@ class MainWindow(QMainWindow):
     def init_ui(self):
         self.setWindowTitle("无限暖暖自动挂机")
         self.setFixedSize(600, 500)
+        
+        # 设置应用图标
+        self.setWindowIcon(QIcon(icon_path))
         
         # 主布局
         main_widget = QWidget()
@@ -382,6 +406,7 @@ class MainWindow(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
+    app.setWindowIcon(QIcon(icon_path))  # 为整个应用程序设置图标
     window = MainWindow()
     window.show()
     sys.exit(app.exec_()) 
